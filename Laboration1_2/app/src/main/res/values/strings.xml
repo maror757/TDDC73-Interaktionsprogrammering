@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Laboration 1.2</string>
+    <string name="none_editable_name">Namn</string>
+    <string name="none_editable_pw">Lösenord</string>
+    <string name="none_editable_mail">Epost</string>
+    <string name="none_editable_age">Ålder</string>
+    <string name="editable_name">Martin</string>
+    <string name="editable_pw">1234567</string>
+    <string name="editable_mail">maror757@liu.se</string>
+    <string name="editable_age">25</string>
+</resources>
