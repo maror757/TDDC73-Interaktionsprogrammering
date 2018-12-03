@@ -130,21 +130,21 @@ public class MainActivity extends AppCompatActivity {
         // array of strings
         String[] array;
 
-        // list of alcohol
+        // list of gtx1000
         List<String> gtx1000List = new ArrayList<>();
         array = getResources().getStringArray(R.array.string_array_gtx1000);
         for (String item : array) {
             gtx1000List.add(item);
         }
 
-        // list of coffee
+        // list of gtx900
         List<String> gtx900List = new ArrayList<>();
         array = getResources().getStringArray(R.array.string_array_gtx900);
         for (String item : array) {
             gtx900List.add(item);
         }
 
-        // list of pasta
+        // list of gtx700
         List<String> gtx700List = new ArrayList<>();
         array = getResources().getStringArray(R.array.string_array_gtx700);
         for (String item : array) {
