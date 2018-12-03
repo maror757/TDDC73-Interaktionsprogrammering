@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGroupExpand(int groupPosition) {
                 Toast.makeText(getApplicationContext(),
-                        listDataGroup.get(groupPosition) + " " + getString(R.string.text_collapsed),
+                        listDataGroup.get(groupPosition) + " " + getString(R.string.text_expanded),
                         Toast.LENGTH_SHORT).show();
             }
         });
