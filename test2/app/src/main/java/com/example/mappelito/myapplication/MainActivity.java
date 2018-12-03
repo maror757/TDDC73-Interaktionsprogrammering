@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         //CREATION OF STATIC TEXT FIELD
         EditText myText1 = new EditText(this);
         myText1.setText("Text fält");
-        //valueTV.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 
         //CREATION OF RATING
         LinearLayout myRatingLayout = new LinearLayout(this);
@@ -40,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         //CREATION OF MULTILINE TEXT FIELD
         EditText myText2 = new EditText(this);
         myText2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-        //myText2.setSingleLine(false);
-        //myText2.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         myText2.setText("ett text fält som \nklarar \nav \nflera rader\noch använder det skärmutrymmet som \n \nfinns ");
 
 

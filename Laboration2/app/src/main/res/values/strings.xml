@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Laboration2</string>
+    <string name="search_init">/</string>
+    <string name="text_gtx1000">GTX1000 series</string>
+    <string name="text_gtx900">GTX900 series</string>
+    <string name="text_gtx700">GTX700 series</string>
+    <string name="text_expanded">Expanded</string>
+    <string name="text_collapsed">Collapsed</string>
+
+    <string-array name="string_array_gtx1000">
+        <item>GeForce GTX 1080</item>
+        <item>GeForce GTX 1070</item>
+        <item>GeForce GTX 1060</item>
+        <item>GeForce GTX 1050 Ti</item>
+    </string-array>
+
+    <string-array name="string_array_gtx900">
+        <item>GeForce GTX 980 Ti</item>
+        <item>GeForce GTX 980</item>
+        <item>GeForce GTX 970</item>
+        <item>GeForce GTX 950</item>
+    </string-array>
+
+    <string-array name="string_array_gtx700">
+        <item>GeForce GTX 740</item>
+        <item>GeForce GTX 730</item>
+        <item>GeForce GTX 720</item>
+    </string-array>
+</resources>
