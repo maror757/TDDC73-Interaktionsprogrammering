@@ -1,8 +1,12 @@
 package com.example.mappelito.laboration2;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -11,15 +15,21 @@ import com.example.mappelito.laboration2.adapter.ExpandableListViewAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private ExpandableListView expandableListView;
+
+    private EditText editTextView;
 
     private ExpandableListViewAdapter expandableListViewAdapter;
 
     private List<String> listDataGroup;
 
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<Integer, List<String>> listDataChild;
+
+    boolean isPart = true;
+    boolean isComplete = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +47,97 @@ public class MainActivity extends AppCompatActivity {
 
         // preparing list data
         initListData();
+
+
+        editTextView.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                String query = s.toString();
+                /*Toast.makeText(getApplicationContext(),
+                        query,
+                        Toast.LENGTH_SHORT).show();*/
+                List<String> grp;
+                int childIndex = -1;
+                int groupIndex = -1;
+                int hashKey;
+                String title = "";
+                String listItem = "";
+                String completeWord = "";
+                String completeWordLowercase = "";
+                String queryLowercase = "";
+
+                if (!query.isEmpty()) {
+                    outerloop:
+                    {
+                        for (HashMap.Entry<Integer, List<String>> entry : listDataChild.entrySet()) {
+                            grp = entry.getValue();
+                            hashKey = entry.getKey();
+                            groupIndex = hashKey;
+                            title = listDataGroup.get(groupIndex);
+
+                            for (int i = 0; i < grp.size(); i++) {
+
+                                listItem = grp.get(i);
+
+                                completeWord = "/" + title + "/" + listItem;
+                                completeWordLowercase = completeWord.toLowerCase();
+                                queryLowercase = query.toLowerCase();
+
+                                if (completeWordLowercase.equals(queryLowercase)) {
+                                    isComplete = true;
+                                    isPart = false;
+                                    childIndex = i;
+                                    break outerloop;
+
+                                } else if (completeWordLowercase.startsWith(queryLowercase)) {
+                                    isComplete = false;
+                                    isPart = true;
+                                    childIndex = i;
+                                    break outerloop;
+                                } else {
+                                    isPart = false;
+                                    isComplete = false;
+                                    childIndex = -1;
+                                    expandableListView.setItemChecked(-1, true);
+                                }
+                            }
+                        }
+                    }
+
+
+                    if (isComplete) {
+                        expandableListView.expandGroup(groupIndex, true);
+                        int index = expandableListView.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupIndex, childIndex));
+                        expandableListView.setItemChecked(index, true);
+                        editTextView.setBackgroundColor(Color.TRANSPARENT);
+                    } else if (isPart) {
+                        editTextView.setBackgroundColor(Color.TRANSPARENT);
+                    } else {
+                        editTextView.setBackgroundColor(Color.RED);
+                    }
+
+                } else {
+                    editTextView.setBackgroundColor(Color.TRANSPARENT);
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
     }
 
 
     /**
      * method to initialize the views
      */
+
     private void initViews() {
 
         expandableListView = findViewById(R.id.expandableListView);
+        editTextView = findViewById(R.id.editText);
     }
 
     /**
@@ -59,15 +151,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataGroup.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataGroup.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
-                return false;
+                /*editTextView.setText("/"+ listDataGroup.get(groupPosition)
+                        + "/"
+                        + listDataChild.get(
+                        listDataGroup.get(groupPosition)).get(
+                        childPosition));*/
+
+                int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
+                parent.setItemChecked(index, true);
+
+                return true;
             }
         });
 
@@ -76,10 +169,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataGroup.get(groupPosition) + " " + getString(R.string.text_expanded),
-                        Toast.LENGTH_SHORT).show();
-            }
+                /*(editTextView.setText("/" +
+                        listDataGroup.get(groupPosition));
+            */}
         });
 
         // ExpandableListView Group collapsed listener
@@ -87,10 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataGroup.get(groupPosition) + " " + getString(R.string.text_collapsed),
-                        Toast.LENGTH_SHORT).show();
-
+                //editTextView.setText(getString(R.string.search_init));
+                expandableListView.setItemChecked(-1, true);
             }
         });
 
@@ -152,9 +242,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Adding child data
-        listDataChild.put(listDataGroup.get(0), gtx1000List);
-        listDataChild.put(listDataGroup.get(1), gtx900List);
-        listDataChild.put(listDataGroup.get(2), gtx700List);
+        listDataChild.put(0, gtx1000List);
+        listDataChild.put(1, gtx900List);
+        listDataChild.put(2, gtx700List);
 
         // notify the adapter
         expandableListViewAdapter.notifyDataSetChanged();

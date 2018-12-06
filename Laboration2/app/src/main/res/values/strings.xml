@@ -15,7 +15,6 @@
     </string-array>
 
     <string-array name="string_array_gtx900">
-        <item>GeForce GTX 980 Ti</item>
         <item>GeForce GTX 980</item>
         <item>GeForce GTX 970</item>
         <item>GeForce GTX 950</item>

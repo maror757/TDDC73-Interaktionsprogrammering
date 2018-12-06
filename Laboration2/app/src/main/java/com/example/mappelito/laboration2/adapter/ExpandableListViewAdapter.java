@@ -20,10 +20,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     private List<String> listDataGroup;
 
     // child data
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<Integer, List<String>> listDataChild;
 
     public ExpandableListViewAdapter(Context context, List<String> listDataGroup,
-                                     HashMap<String, List<String>> listChildData) {
+                                     HashMap<Integer, List<String>> listChildData) {
         this.context = context;
         this.listDataGroup = listDataGroup;
         this.listDataChild = listChildData;
@@ -31,7 +31,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataGroup.get(groupPosition))
+        return this.listDataChild.get(groupPosition)
                 .get(childPosititon);
     }
 
@@ -61,8 +61,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataGroup.get(groupPosition))
-                .size();
+        return this.listDataChild.get(groupPosition).size();
     }
 
     @Override
