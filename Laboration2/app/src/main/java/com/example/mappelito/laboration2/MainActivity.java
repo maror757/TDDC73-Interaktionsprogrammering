@@ -151,11 +151,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                /*editTextView.setText("/"+ listDataGroup.get(groupPosition)
+
+                editTextView.setText("/"+ listDataGroup.get(groupPosition)
                         + "/"
-                        + listDataChild.get(
-                        listDataGroup.get(groupPosition)).get(
-                        childPosition));*/
+                        + listDataChild.get(groupPosition).get(
+                        childPosition));
 
                 int index = parent.getFlatListPosition(ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
                 parent.setItemChecked(index, true);
