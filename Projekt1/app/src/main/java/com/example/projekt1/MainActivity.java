@@ -12,17 +12,16 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        // Create the layout params for the interactive searcher
+        // Create the layout params for the PasswordStrengthMeter
         LinearLayout.LayoutParams passwordStrengthMeterParams =
                 new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        // Create the interactive searcher
+        // Create the PasswordStrengthMeter
         PasswordStrengthMeter passwordStrengthMeter = new PasswordStrengthMeter(this);
+
         linearLayout.addView(passwordStrengthMeter, passwordStrengthMeterParams);
-
-
         linearLayout.setPadding(40,40,40,40);
         setContentView(linearLayout);
         //setContentView(R.layout.activity_main);
