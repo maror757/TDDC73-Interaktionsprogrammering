@@ -2,7 +2,6 @@ package com.example.laboration3;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,14 +21,10 @@ public class MainActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        // Test button
-        Button button = new Button(this);
-        button.setText("Test!");
-        linearLayout.addView(button);
 
         // Test text view
         TextView textView = new TextView(this);
-        textView.setText("Test!");
+        textView.setText("...");
         // Create the interactive searcher
         InteractiveSearcher interactiveSearcher = new InteractiveSearcher(this, n, textView);
         linearLayout.addView(interactiveSearcher, interactiveSearcherParams);
