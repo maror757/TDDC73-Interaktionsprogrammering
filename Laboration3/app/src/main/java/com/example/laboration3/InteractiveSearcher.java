@@ -73,7 +73,7 @@ public class InteractiveSearcher extends LinearLayout {
             {
                 history = searchResults.get(position);
                 editText.setText(searchResults.get(position));
-                listpopupWindow.show();
+                //listpopupWindow.dismiss();
             }
         });
     }
