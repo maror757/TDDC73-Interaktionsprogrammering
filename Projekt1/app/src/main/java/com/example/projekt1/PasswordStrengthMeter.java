@@ -201,8 +201,6 @@ public class PasswordStrengthMeter extends LinearLayout {
                 }
 
                 progressBar.setProgress(progressStatus);
-                //TODO: Set this function to generate a value between 0-100 based on pw strength.
-                //getPasswordStrength(password);
             }
         });
     }
