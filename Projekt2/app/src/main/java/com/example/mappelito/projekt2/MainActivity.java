@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
 
-
-
         linearLayout.addView(createAccountBtn);
         setContentView(linearLayout);
         //setContentView(R.layout.activity_main);

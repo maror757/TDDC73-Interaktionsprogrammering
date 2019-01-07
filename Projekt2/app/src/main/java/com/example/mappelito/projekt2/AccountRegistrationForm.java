@@ -1,16 +1,19 @@
 package com.example.mappelito.projekt2;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,10 @@ public class AccountRegistrationForm  extends LinearLayout {
     private TextView tvEmail;
     private TextView tvPassword;
     private TextView tvPassword2;
+    private int textViewWidth = 150;
+    private boolean OPTIONAL = true;
+    private boolean NOT_OPTIONAL = false;
+    private ArrayList<Pair<TextView, EditText>> nonOptionalEntriesList = new ArrayList<>();
 
     public AccountRegistrationForm(Context cxt) {
         super(cxt);
@@ -40,11 +47,11 @@ public class AccountRegistrationForm  extends LinearLayout {
         setLayout();
     }
 
+    //Initiates all the textviews and editable text views with titles and hints.
     private void initiateForm()
     {
         tvName  = new TextView(context);
         tvName.setText("Full Name");
-        tvName.setPadding(0,0,5,0);
 
         etName = new EditText(context);
         etName.setHint("First Last");
@@ -57,54 +64,65 @@ public class AccountRegistrationForm  extends LinearLayout {
 
         tvEmail = new TextView(context);
         tvEmail.setText("Email");
-        tvEmail.setPadding(0,0, 88, 0);
 
         etEmail = new EditText(context);
         etEmail.setHint("example@gmail.com");
 
         tvPassword = new TextView(context);
         tvPassword.setText("Password");
-        tvPassword.setPadding(0,0,160,0);
         tvPassword2 = new TextView(context);
         tvPassword2.setText("Confirm Password");
 
         etPassword = new EditText(context);
+        etPassword.setTransformationMethod(new PasswordTransformationMethod());
         etPassword2 = new EditText(context);
+        etPassword2.setTransformationMethod(new PasswordTransformationMethod());
 
     }
 
-    private void addLayout(TextView tv, EditText et)
+    //Combines the title with its editable text field in a horizontal layout
+    //It also adds the entry to the nonOptionalEntriesList if it is marked as a NON-OPTIONAL info.
+    private void addLayout(TextView tv, EditText et, boolean optional)
     {
-        // Sets the params for the textView
+
+        //Log.d("CREATION", "addLayout done");
+        if(!optional)
+        {
+            Pair<TextView,EditText> nonOptEntry = new Pair<>(tv,et);
+            nonOptionalEntriesList.add(nonOptEntry);
+        }
+        // Sets the params for the TextView
         LinearLayout.LayoutParams tvParams =
                 new LinearLayout.LayoutParams(
-                        LayoutParams.WRAP_CONTENT,
+                        textViewWidth,
                         LayoutParams.WRAP_CONTENT);
-        //tvParams.setMarginStart(100);
 
-        // Sets the params for the textView
+        // Sets the params for the EditText
         LinearLayout.LayoutParams etParams =
                 new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT);
+        et.setBackgroundResource(android.R.drawable.edit_text);
 
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.HORIZONTAL);
+
         layout.addView(tv, tvParams);
         layout.addView(et, etParams);
-        layout.setPadding(5,0,20,0);
+        layout.setPadding(0,0,20,0);
 
         verticalLinearLayout.addView(layout);
     }
 
-    private void addGenderSpinner()
+    //Adds a spinner with different String variables from an ArrayList.
+    private void addStringSpinner()
     {
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView tvGender = new TextView(context);
         tvGender.setText("Gender");
-        tvGender.setPadding(0,0,50,0);
+        tvGender.setWidth(textViewWidth);
 
         ArrayList<String> spinnerArray = new ArrayList<>();
         spinnerArray.add("Male");
@@ -114,11 +132,12 @@ public class AccountRegistrationForm  extends LinearLayout {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinner.setAdapter(spinnerArrayAdapter);
 
-        // Sets the params for the textView
+        // Sets the params for the Spinner
         LinearLayout.LayoutParams spinnerParams =
                 new LinearLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT);
+        // Sets the paras for the TextView and Horizontal Layout
         LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT,
@@ -129,14 +148,15 @@ public class AccountRegistrationForm  extends LinearLayout {
         verticalLinearLayout.addView(layout, layoutParams);
     }
 
-    private void addAgeSpinner()
+    //Adds a spinner with Integer values generated from a for-loop
+    private void addIntegerSpinner()
     {
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 
-        TextView tvGender = new TextView(context);
-        tvGender.setText("Age");
-        tvGender.setPadding(0,0,120,0);
+        TextView tvAge = new TextView(context);
+        tvAge.setText("Age");
+        tvAge.setWidth(textViewWidth);
 
         ArrayList<Integer> spinnerArray = new ArrayList<>();
         for(int i = 0; i < 100; i++)
@@ -148,16 +168,17 @@ public class AccountRegistrationForm  extends LinearLayout {
         ArrayAdapter<Integer> spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinner.setAdapter(spinnerArrayAdapter);
 
-        // Sets the params for the textView
+        // Sets the params for the Spinner
         LinearLayout.LayoutParams spinnerParams =
                 new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT);
+        // Sets the params for the TextView and Horizontal Layout
         LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT);
-        layout.addView(tvGender, layoutParams);
+        layout.addView(tvAge, layoutParams);
         layout.addView(spinner, spinnerParams);
 
         verticalLinearLayout.addView(layout, layoutParams);
@@ -165,20 +186,19 @@ public class AccountRegistrationForm  extends LinearLayout {
 
     private void setLayout()
     {
-        /** DEFINE LAYOUT PARAMETERS FOR ALL MODULES IN THE LAYOUT **/
         //Sets the params for the linearLayout
         LinearLayout.LayoutParams linearLayoutParams =
                 new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT);
 
-        addLayout(tvName, etName);
-        addLayout(tvEmail, etEmail);
-        addLayout(tvUsername, etUsername);
-        addGenderSpinner(); //Gender dropdown selection list, male or female
-        addAgeSpinner();
-        addLayout(tvPassword,etPassword);
-        addLayout(tvPassword2, etPassword2);
+        addLayout(tvName, etName, NOT_OPTIONAL);
+        addLayout(tvEmail, etEmail, NOT_OPTIONAL);
+        addLayout(tvUsername, etUsername, NOT_OPTIONAL);
+        addStringSpinner(); //Gender dropdown selection list, male or female
+        addIntegerSpinner(); //Age dropdown selection list, 0-100
+        addLayout(tvPassword, etPassword, NOT_OPTIONAL);
+        addLayout(tvPassword2, etPassword2, NOT_OPTIONAL);
 
         Button signUpBtn = new Button(context);
         signUpBtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -189,17 +209,27 @@ public class AccountRegistrationForm  extends LinearLayout {
         {
             @Override
             public void onClick(View v) {
+
                 if(!checkMandatoryInput())
                 {
-                    //TODO: give message saying not all mandatory forms have been set
+                    String text = "Enter all non-optional information";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
                 else if(!checkPasswordMatch())
                 {
-                    //TODO: give message saying passwords don't match
+                    String text = "Passwords must match";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
                 else
                 {
-                    //TODO: clear view and send message, "Registration complete"
+                    String text = "Registration complete!";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
 
             }
@@ -210,10 +240,48 @@ public class AccountRegistrationForm  extends LinearLayout {
 
     private boolean checkMandatoryInput()
     {
+        for(int i = 0; i < nonOptionalEntriesList.size(); i++)
+        {
+            EditText et = nonOptionalEntriesList.get(i).second;
+            String submittedEntry = et.getText().toString();
+            if(submittedEntry.length() == 0)
+            {
+                // Initialize a new GradientDrawable that is set to have a red border
+                //so the user knows what field needs to be entered.
+                GradientDrawable gd = new GradientDrawable();
+                gd.setColor(Color.parseColor("#00ffffff"));
+                gd.setStroke(2,Color.RED);
+                et.setBackground(gd);
+                return false;
+            }
+            else
+            {
+                //Resets the background if text is entered and to remove the red border.
+                et.setBackgroundResource(android.R.drawable.edit_text);
+            }
+        }
         return true;
     }
+
+    //Checks if the password matches the one entered in the "Confirm Passoword"-field
     private boolean checkPasswordMatch()
     {
-        return true;
+        String password = "0";
+        String password2 = "1";
+        for(int i = 0; i < nonOptionalEntriesList.size(); i++) {
+            TextView tv = nonOptionalEntriesList.get(i).first;
+            EditText et = nonOptionalEntriesList.get(i).second;
+
+            if(tv.getText().toString() == tvPassword.getText().toString())
+            {
+                password = et.getText().toString();
+            }
+            if (tv.getText().toString() == tvPassword2.getText().toString())
+            {
+                password2 = et.getText().toString();
+            }
+        }
+
+        return password.matches(password2);
     }
 }
