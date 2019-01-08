@@ -2,6 +2,7 @@ package com.example.projekt1;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.LinearLayout;
@@ -17,12 +18,18 @@ public class PasswordStrengthMeter extends LinearLayout {
     private EditText editText;
     private ProgressBar progressBar;
     private TextView textView;
-
+    private Drawable clr1 = res.getDrawable(R.drawable.redprogress);
+    private Drawable clr2 = res.getDrawable(R.drawable.yellowprogress);
+    private Drawable clr3 = res.getDrawable(R.drawable.greenprogress);
 
     private int WEAK = 0;
     private int MEDIUM = 33;
     private int STRONG = 66;
     private int VERY_STRONG= 100;
+    private String textWEAK = "bad";
+    private String textMEDIUM = "decent";
+    private String textSTRONG = "good";
+    private String textVERY_STRONG = "very good";
     private int progressStatus = 0;
     // Constructor
     public PasswordStrengthMeter(Context cxt) {
@@ -182,27 +189,42 @@ public class PasswordStrengthMeter extends LinearLayout {
                 progressStatus = getPasswordStrength(password);
                 if (progressStatus == WEAK)
                 {
-                    textView.setText("Weak");
+                    textView.setText(textWEAK);
                 }
                 else if(progressStatus == MEDIUM)
                 {
-                    progressBar.setProgressDrawable(res.getDrawable(R.drawable.redprogress));
-                    textView.setText("Medium");
+                    progressBar.setProgressDrawable(clr1);
+                    textView.setText(textMEDIUM);
                 }
                 else if(progressStatus == STRONG)
                 {
-                    progressBar.setProgressDrawable(res.getDrawable(R.drawable.yellowprogress));
-                    textView.setText("Strong");
+                    progressBar.setProgressDrawable(clr2);
+                    textView.setText(textSTRONG);
                 }
                 else
                 {
-                    progressBar.setProgressDrawable(res.getDrawable(R.drawable.greenprogress));
-                    textView.setText("Very Strong");
+                    progressBar.setProgressDrawable(clr3);
+                    textView.setText(textVERY_STRONG);
                 }
 
                 progressBar.setProgress(progressStatus);
             }
         });
+    }
+
+    public void setMessages(String msg1, String msg2, String msg3, String msg4)
+    {
+        textWEAK = msg1;
+        textMEDIUM = msg2;
+        textSTRONG = msg3;
+        textVERY_STRONG = msg4;
+    }
+
+    public void setColors(Drawable color1, Drawable color2, Drawable color3)
+    {
+        clr1 = color1;
+        clr2 = color2;
+        clr3 = color3;
     }
 }
 

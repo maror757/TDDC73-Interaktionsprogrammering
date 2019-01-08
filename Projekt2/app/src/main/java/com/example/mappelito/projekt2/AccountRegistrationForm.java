@@ -33,9 +33,11 @@ public class AccountRegistrationForm  extends LinearLayout {
     private TextView tvPassword;
     private TextView tvPassword2;
     private int textViewWidth = 150;
+    private int numberOfTextFields = 5;
     private boolean OPTIONAL = true;
     private boolean NOT_OPTIONAL = false;
-    private ArrayList<Pair<TextView, EditText>> nonOptionalEntriesList = new ArrayList<>();
+    private ArrayList<Pair<Boolean, EditText>> nonOptionalEntriesList = new ArrayList<>();
+    private View.OnClickListener signUpListener;
 
     public AccountRegistrationForm(Context cxt) {
         super(cxt);
@@ -43,6 +45,11 @@ public class AccountRegistrationForm  extends LinearLayout {
         verticalLinearLayout = new LinearLayout(context);
         verticalLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
+        signUpListener = new View.OnClickListener() {
+            public void onClick(View v){
+                runDefaultLogic();
+            }
+        };
         initiateForm();
         setLayout();
     }
@@ -86,11 +93,8 @@ public class AccountRegistrationForm  extends LinearLayout {
     {
 
         //Log.d("CREATION", "addLayout done");
-        if(!optional)
-        {
-            Pair<TextView,EditText> nonOptEntry = new Pair<>(tv,et);
-            nonOptionalEntriesList.add(nonOptEntry);
-        }
+        Pair<Boolean,EditText> entry = new Pair<>(optional,et);
+        nonOptionalEntriesList.add(entry);
         // Sets the params for the TextView
         LinearLayout.LayoutParams tvParams =
                 new LinearLayout.LayoutParams(
@@ -205,46 +209,48 @@ public class AccountRegistrationForm  extends LinearLayout {
         signUpBtn.setText("Sign up");
         verticalLinearLayout.addView(signUpBtn);
 
-        signUpBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-
-                if(!checkMandatoryInput())
-                {
-                    String text = "Enter all non-optional information";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-                else if(!checkPasswordMatch())
-                {
-                    String text = "Passwords must match";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-                else
-                {
-                    String text = "Registration complete!";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-
-            }
-        });
+        signUpBtn.setOnClickListener(signUpListener);
 
         this.addView(verticalLinearLayout, linearLayoutParams);
     }
 
+    public void setSignUpListener(View.OnClickListener onClickListener)
+    {
+        signUpListener = onClickListener;
+    }
+    private void runDefaultLogic()
+    {
+        if(!checkMandatoryInput())
+        {
+            String text = "Enter all non-optional information";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else if(!checkPasswordMatch())
+        {
+            String text = "Passwords must match";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else
+        {
+            String text = "Registration complete!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
+    }
     private boolean checkMandatoryInput()
     {
         for(int i = 0; i < nonOptionalEntriesList.size(); i++)
         {
+            boolean optional = nonOptionalEntriesList.get(i).first;
             EditText et = nonOptionalEntriesList.get(i).second;
             String submittedEntry = et.getText().toString();
-            if(submittedEntry.length() == 0)
+            if(!optional && submittedEntry.length() == 0)
             {
                 // Initialize a new GradientDrawable that is set to have a red border
                 //so the user knows what field needs to be entered.
@@ -263,25 +269,27 @@ public class AccountRegistrationForm  extends LinearLayout {
         return true;
     }
 
-    //Checks if the password matches the one entered in the "Confirm Passoword"-field
+    //Checks if the password matches the one entered in the "Confirm Password"-field
     private boolean checkPasswordMatch()
     {
-        String password = "0";
-        String password2 = "1";
-        for(int i = 0; i < nonOptionalEntriesList.size(); i++) {
-            TextView tv = nonOptionalEntriesList.get(i).first;
-            EditText et = nonOptionalEntriesList.get(i).second;
+        String password = etPassword.getText().toString();
+        String password2 = etPassword2.getText().toString();
 
-            if(tv.getText().toString() == tvPassword.getText().toString())
+        return password.matches(password2);
+    }
+
+    public void setOptionalFields(ArrayList<Boolean> optionalList)
+    {
+        if(optionalList.size() < numberOfTextFields)
+            Log.e("ERROR", "Input Arraylist size must be larger or equal to " + numberOfTextFields);
+        else
+        {
+            for(int i = 0; i < nonOptionalEntriesList.size(); i++)
             {
-                password = et.getText().toString();
-            }
-            if (tv.getText().toString() == tvPassword2.getText().toString())
-            {
-                password2 = et.getText().toString();
+                Pair<Boolean, EditText> changedOptional = new Pair<>(optionalList.get(i), nonOptionalEntriesList.get(i).second);
+                nonOptionalEntriesList.set(i, changedOptional);
             }
         }
 
-        return password.matches(password2);
     }
 }

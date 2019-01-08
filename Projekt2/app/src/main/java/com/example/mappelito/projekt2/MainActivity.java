@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Create the PasswordStrengthMeter
         final AccountRegistrationForm accountForm = new AccountRegistrationForm(this);
+        ArrayList<Boolean> optionalFields = new ArrayList<>();
+        optionalFields.add(true);
+        optionalFields.add(false);
+        optionalFields.add(false);
+        optionalFields.add(false);
+        optionalFields.add(false);
+        accountForm.setOptionalFields(optionalFields);
 
 
 
