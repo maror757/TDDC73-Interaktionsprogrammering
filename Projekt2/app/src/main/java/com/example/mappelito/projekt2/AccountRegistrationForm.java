@@ -54,6 +54,7 @@ public class AccountRegistrationForm  extends LinearLayout {
         setLayout();
     }
 
+    //TODO: bryt ut raden TV + ET till egen class.
     //Initiates all the textviews and editable text views with titles and hints.
     private void initiateForm()
     {

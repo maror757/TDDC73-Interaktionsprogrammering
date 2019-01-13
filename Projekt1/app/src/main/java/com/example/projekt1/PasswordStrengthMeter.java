@@ -40,6 +40,7 @@ public class PasswordStrengthMeter extends LinearLayout {
         setListeners();
     }
 
+    //TODO: Bryt ut till egen class, samt en SET pwstrength metod.
     //Create function that determines password strength
     private int getPasswordStrength(String password) {
 
