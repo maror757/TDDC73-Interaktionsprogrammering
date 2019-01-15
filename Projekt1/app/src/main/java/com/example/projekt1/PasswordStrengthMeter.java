@@ -31,98 +31,27 @@ public class PasswordStrengthMeter extends LinearLayout {
     private String textSTRONG = "good";
     private String textVERY_STRONG = "very good";
     private int progressStatus = 0;
+    private PasswordStrengthCalculator strengthCalculator;
     // Constructor
     public PasswordStrengthMeter(Context cxt) {
         super(cxt);
         context = cxt;
 
+        strengthCalculator = new PasswordStrengthCalculator(context);
+
+        setPasswordStrengthMethod(0);
         setLayout();
         setListeners();
     }
 
-    //TODO: Bryt ut till egen class, samt en SET pwstrength metod.
     //Create function that determines password strength
     private int getPasswordStrength(String password) {
+        return strengthCalculator.getStrength(password);
+    }
 
-        //--------REQUIREMENTS--------
-        int REQUIRED_LENGTH = 6;
-        int GOOD_LENGTH = 10;
-        boolean REQUIRE_SPECIAL_CHARACTERS = true;
-        boolean REQUIRE_DIGITS = true;
-        boolean REQUIRE_LOWER_CASE = true;
-        boolean REQUIRE_UPPER_CASE = true;
-
-        int currentScore = 0;
-        boolean sawUpper = false;
-        boolean sawLower = false;
-        boolean sawDigit = false;
-        boolean sawSpecial = false;
-
-            for (int i = 0; i < password.length(); i++)
-            {
-                char c = password.charAt(i);
-
-                if (!sawSpecial && !Character.isLetterOrDigit(c))
-                {
-                    currentScore += 1;
-                    sawSpecial = true;
-                }
-                else
-                {
-                    if (!sawDigit && Character.isDigit(c))
-                    {
-                        currentScore += 1;
-                        sawDigit = true;
-                    }
-                    else
-                    {
-                        if (!sawUpper || !sawLower)
-                        {
-                            if (Character.isUpperCase(c))
-                                sawUpper = true;
-                            else
-                                sawLower = true;
-                            if (sawUpper && sawLower)
-                                currentScore += 1;
-                        }
-                    }
-                }
-            }
-
-            if (password.length() > REQUIRED_LENGTH)
-            {
-                if ((REQUIRE_SPECIAL_CHARACTERS && !sawSpecial) || (REQUIRE_UPPER_CASE && !sawUpper) || (REQUIRE_LOWER_CASE && !sawLower) || (REQUIRE_DIGITS && !sawDigit))
-                {
-                    currentScore = 1;
-                }
-                else
-                {
-                    currentScore = 2;
-                    if (password.length() > GOOD_LENGTH)
-                    {
-                        currentScore = 3;
-                    }
-                }
-            }
-            else
-            {
-                currentScore = 0;
-            }
-
-            switch (currentScore)
-            {
-                case 0:
-                    return WEAK;
-                case 1:
-                    return MEDIUM;
-                case 2:
-                    return STRONG;
-                case 3:
-                    return VERY_STRONG;
-                default:
-            }
-
-            return VERY_STRONG;
+    private void setPasswordStrengthMethod(int method)
+    {
+        strengthCalculator.setMethod(method);
     }
 
     private void setLayout()
